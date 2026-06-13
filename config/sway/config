@@ -43,18 +43,18 @@
         gaps left -10
 
     # SwayFX additional options:
-        blur enable
-        blur_radius 5
-        corner_radius 20
-        shadows enable
-        shadow_blur_radius 10
-        shadow_color #000000aa
-        shadow_offset 25 25
+        # blur enable
+        # blur_radius 5
+        # corner_radius 20
+        # shadows enable
+        # shadow_blur_radius 10
+        # shadow_color #000000aa
+        # shadow_offset 25 25
 
-        layer_effects "waybar" {
-            blur enable;
-            corner_radius 16;
-        }
+        # layer_effects "waybar" {
+        #     blur enable;
+        #     corner_radius 16;
+        # }
 
 # Bar and background
 bar {
@@ -67,7 +67,6 @@ include "/etc/sway/config.d/50-systemd-user.conf"
 
 # Autolock & suspend
 exec swayidle -w \
-    # After 10 minutes of inactivity, save the current brightness and set it to 1%
     timeout 600 'brightnessctl get > $brightness_file && brightnessctl set 1%' \
     resume 'brightnessctl set $(cat $brightness_file)' \
     \
