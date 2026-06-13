@@ -1,0 +1,11 @@
+#Style
+font=SF Pro
+text-color=#000000
+background-color=#f2f2f2
+border-size=0
+border-color=#2c2a2d
+border-radius=16
+icon-border-radius=32
+default-timeout=6000
+anchor=top-right
+outer-margin=5

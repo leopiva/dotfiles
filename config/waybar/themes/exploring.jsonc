@@ -1,0 +1,166 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    "position": "top",
+    "margin": "3 0 0 0",
+    "width": 1700,
+    
+    "modules-left": [
+        "sway/workspaces", 
+        "sway/mode",
+        "sway/scratchpad"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "tray",
+        "custom/menu",
+        "backlight",
+        "pulseaudio",
+        "idle_inhibitor",
+        "network",
+        "bluetooth",
+        "battery",
+        "custom/power"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "disable-markup": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "󰈹",
+            "2": "",
+            "3": "",
+            "4": "\uf07c",
+            "5": "",
+            "6": "",
+            "8": "󰍳",
+            "9": "\uf013",
+            "default": {
+                "format": "{name}"
+            }
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "8": [],
+            "9": []
+	    }
+        // I don't use 7, don't know why
+    },
+    "sway/mode": {
+        "format": "<span font='Deja Vu Sans Italic'>{}</span>"
+    },
+    // "sway/window": {
+    //     "max-length": 60,
+    //     "tooltip": false
+    // },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        },
+        "tooltip": false
+    },
+    "tray": {
+        "icon-size": 22,
+        "spacing": 8,
+        "icons": {
+            "blueman": "bluetooth",
+            "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        }
+    },
+    "clock": {
+        "format": "{:%d %b  %H:%M}",
+        "tooltip": false
+    },
+    "cpu": {
+        "format": "",
+        "on-click": "alacritty -e btop"
+    },
+    "backlight": {
+        "format": "{icon}",
+        // "format-icons": ["", "", "", "", "", "", "󰖨"],                    // Phases of the moon
+        "format-icons": [ "󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"],    // Lightbulb
+        "scroll-step": 10.5006, // Così strano per evitare che allo scroll dal 100% al 90% rimanga l'icona del 100
+        "tooltip-format": "{percent}%"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format-icons": {
+            "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂"],
+            "charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋"]
+        },
+        "format": "{icon}",
+        "format-charging": "{icon}",
+        "format-full": "󰂅",
+        "tooltip-format": "{capacity}%"
+    },
+    "network": {
+        "format-wifi": "{icon}",
+        "format-ethernet": "󱚽",
+        "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+        "format-disconnected": "󰤮",
+        "tooltip-format": "{essid}",
+        "tooltip-format-ethernet": "wired",
+        "on-click": "alacritty -e nmtui",
+        "on-click-right": "notify-send '󰔟 Connecting...'; nmcli connection up dadopiva; notify-send '   Connected'",
+        "on-click-middled": "nmcli connection down dadopiva"
+    },
+    "bluetooth": {
+        "format": "",
+        "on-click": "blueman-manager",
+        "tooltip-format": "{device_alias}\t({device_battery_percentage}%)"
+    },
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "{icon}",
+        "format-bluetooth": "󱡏",
+        "format-bluetooth-muted": "󱡑",
+        "format-muted": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "hands-free": "",
+            "headphone": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", "", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "tooltip-format": "{volume}%"
+    },
+    "custom/power": {
+        "format" : "",
+		"tooltip": false,
+		"on-click":"~/.config/sway/logout.sh ~/.config/sway/lock.sh"
+    },
+    // "custom/chatgpt": {
+    //     "format": "󱜸",
+    //     "on-click": "firefox --new-window https://chatgpt.com",
+    //     "tooltip": false
+    // },
+    "custom/menu": {
+        "format": "󰍉",
+        "on-click": "fuzzel --anchor top-right --x-margin 150 --y-margin 5 --lines 24 --width 13",
+        "tooltip": false
+    }
+}

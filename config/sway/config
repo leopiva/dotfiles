@@ -1,0 +1,229 @@
+# SWAY CONFIG FILE
+
+# Variables
+    set $mod Mod4
+
+    set $term alacritty
+    set $menu fuzzel
+    set $browser firefox
+
+    set $partial_screenshot grim -g "$(slurp)" ~/Immagini/Schermate/'Screenshot '$(date +"%Y-%m-%d-%H-%M-%S").png
+    set $screenshot grim ~/Immagini/Schermate/'Screenshot '$(date +"%Y-%m-%d-%H-%M-%S").png
+
+    set $logout  ~/.config/sway/logout.sh
+    set $lock ~/.config/sway/lock.sh
+    set $brightness_file ~/.config/sway/brightness-before-idle.txt
+
+    set $cl_high #8be8bb
+    set $cl_back #231f20
+    set $cl_urge #ee2e24
+    #                       border   bg       text     indi     childborder
+    client.focused          $cl_high $cl_high #000000 $cl_high $cl_high
+    client.unfocused        $cl_back $cl_back #686868  $cl_back $cl_back
+    client.urgent           $cl_urge $cl_urge #000000 $cl_urge $cl_urge
+
+# Autostart
+    xwayland enable
+    exec_always --no-startup-id "~/.local/bin/autotiling --limit 2"
+    exec $lock
+    exec mako  # Notifications 
+
+# Window appearance
+    font pango:Deja Vu Sans Italic 12
+    for_window [tiling] border pixel 1
+    for_window [floating] border normal
+    titlebar_padding 1 2
+
+    smart_gaps off
+    gaps inner 10
+    # These are added to inner gaps:
+        gaps top -9
+        gaps right -10
+        gaps bottom -10
+        gaps left -10
+
+    # SwayFX additional options:
+        blur enable
+        blur_radius 5
+        corner_radius 20
+        shadows enable
+        shadow_blur_radius 10
+        shadow_color #000000aa
+        shadow_offset 25 25
+
+        layer_effects "waybar" {
+            blur enable;
+            corner_radius 16;
+        }
+
+# Bar and background
+bar {
+    swaybar_command waybar
+}
+set $background ~/Immagini/Sfondi/812553.jpg
+
+# Environment variables
+include "/etc/sway/config.d/50-systemd-user.conf"
+
+# Autolock & suspend
+exec swayidle -w \
+    # After 10 minutes of inactivity, save the current brightness and set it to 1%
+    timeout 600 'brightnessctl get > $brightness_file && brightnessctl set 1%' \
+    resume 'brightnessctl set $(cat $brightness_file)' \
+    \
+    timeout 615 '$lock' \
+    timeout 617 'systemctl suspend-then-hibernate' \
+    resume 'swaymsg "output * power on"' \
+    before-sleep '$lock'
+
+# Input/output configuration: get names of inputs by running: swaymsg -t get_inputs|get_outputs
+
+    # Keyboard
+    input * {
+        xkb_layout it
+        xkb_numlock enabled
+    }
+
+    # Touchpad
+    input "1267:12541:ELAN0791:00_04F3:30FD_Touchpad" {
+        dwt enabled
+        tap enabled
+        natural_scroll enabled
+        middle_emulation enabled
+    }
+
+    # Monitors
+    output eDP-1 {
+        background $background fill
+        resolution 1920x1080 position 0 1080
+    }
+    output HDMI-A-1 {
+        background $background fill
+        resolution 1920x1080 position 0 0
+    }
+
+### Key bindings
+# Basics:
+    bindsym $mod+Return exec $term
+    bindsym $mod+b exec $browser
+    bindsym $mod+Shift+q kill
+    bindsym $mod+d exec $menu
+    bindsym $mod+Shift+c reload
+    bindsym $mod+print exec $partial_screenshot
+    bindsym $mod+Shift+print exec $screenshot
+    bindsym $mod+Shift+d exec $lock
+    bindsym $mod+Shift+e exec "$logout $lock"
+
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym --locked XF86MonBrightnessUp exec brightnessctl set +5%
+    bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- -l 1.0
+    bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1.0
+
+    floating_modifier $mod normal
+
+# Moving around:
+    # Move your focus around
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+
+    # Allow switching between workspaces with left and right swipes
+    bindgesture swipe:right workspace prev
+    bindgesture swipe:left workspace next
+
+# Workspaces:
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    # using numpad
+    bindsym $mod+KP_1 workspace number 1
+    bindsym $mod+KP_2 workspace number 2
+    bindsym $mod+KP_3 workspace number 3
+    bindsym $mod+KP_4 workspace number 4
+    bindsym $mod+KP_5 workspace number 5
+    bindsym $mod+KP_6 workspace number 6
+    bindsym $mod+KP_7 workspace number 7
+    bindsym $mod+KP_8 workspace number 8
+    bindsym $mod+KP_9 workspace number 9
+    bindsym $mod+KP_0 workspace number 10
+
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+    # using numpad
+    bindsym $mod+Shift+KP_End move container to workspace number 1
+    bindsym $mod+Shift+KP_Down move container to workspace number 2
+    bindsym $mod+Shift+KP_Next move container to workspace number 3
+    bindsym $mod+Shift+KP_Left move container to workspace number 4
+    bindsym $mod+Shift+KP_Begin move container to workspace number 5
+    bindsym $mod+Shift+KP_Right move container to workspace number 6
+    bindsym $mod+Shift+KP_Home move container to workspace number 7
+    bindsym $mod+Shift+KP_Up move container to workspace number 8
+    bindsym $mod+Shift+KP_Prior move container to workspace number 9
+    bindsym $mod+Shift+KP_Insert move container to workspace number 10
+
+    # Vertical movement through displays
+    bindsym $mod+Shift+w move workspace to output up
+    bindsym $mod+Shift+s move workspace to output down
+
+# Containers:
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+
+# Scratchpad:
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    bindsym $mod+minus scratchpad show
+
+# Resizing containers:
+mode "resize" {
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
