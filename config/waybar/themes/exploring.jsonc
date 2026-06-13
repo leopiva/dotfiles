@@ -16,7 +16,6 @@
     "modules-right": [
         "tray",
         "custom/menu",
-        "backlight",
         "pulseaudio",
         "idle_inhibitor",
         "network",
