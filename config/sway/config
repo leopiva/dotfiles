@@ -34,6 +34,8 @@
     for_window [floating] border normal
     titlebar_padding 1 2
 
+    for_window [app_id="org.gnome.Calculator"] floating enable
+
     smart_gaps off
     gaps inner 10
     # These are added to inner gaps:
@@ -105,8 +107,9 @@ exec swayidle -w \
 # Basics:
     bindsym $mod+Return exec $term
     bindsym $mod+b exec $browser
-    bindsym $mod+Shift+q kill
     bindsym $mod+d exec $menu
+    bindsym $mod+c exec gnome-calculator
+    bindsym $mod+Shift+q kill
     bindsym $mod+Shift+c reload
     bindsym $mod+print exec $partial_screenshot
     bindsym $mod+Shift+print exec $screenshot
